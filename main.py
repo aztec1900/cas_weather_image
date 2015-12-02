@@ -48,7 +48,7 @@ def getWeatherImage(md5LastImageNorth, md5LastImageSouth):
         dataNorth = urllib2.urlopen(url=urlNorth, timeout=10).read()
         dataSouth = urllib2.urlopen(url=urlSouth, timeout=10).read()
     except Exception as err:
-        logging.error('Fail when getting image from url')
+        logging.error('Fail when getting image from url.')
         logging.error(err)
         return (md5NewNorth, md5NewSouth)
     md5obj = md5.new()
@@ -58,16 +58,16 @@ def getWeatherImage(md5LastImageNorth, md5LastImageSouth):
         newFileName = 'N' + time.strftime("%Y%m%d%H%M%S") + '.jpg'
         with open(newFileName,'wb') as hNewImage:
             hNewImage.write(dataNorth)
-            logging.info('Restored new north image %s' % newFileName)
-            print 'Restored new north image %s' % newFileName
+            logging.info('Restored new north image %s.' % newFileName)
+            print 'Restored new north image %s.' % newFileName
     md5obj.update(dataSouth)
     md5NewSouth = md5obj.hexdigest()
     if md5NewSouth != md5LastImageSouth:
         newFileName = 'S' + time.strftime("%Y%m%d%H%M%S") + '.jpg'
         with open(newFileName,'wb') as hNewImage:
             hNewImage.write(dataSouth)
-            logging.info('Restored new south image %s' %  newFileName)
-            print 'Restored new south image %s' % newFileName
+            logging.info('Restored new south image %s.' %  newFileName)
+            print 'Restored new south image %s.' % newFileName
     return (md5NewNorth, md5NewSouth)
     
     
@@ -81,16 +81,16 @@ def main():
                     filename='weatherImage' + strTime + '.log',
                     filemode='w')
     (md5LastImageNorth, md5LastImageSouth) = readHistoryFileMD5()
-    lastTime = time.time()
-    timeStepSec = 120
+    lastTime = 0
+    timeStepSec = 300
     while True:
-        time.sleep(20)
         curTime = time.time()
         if curTime - lastTime > timeStepSec:
             (md5LastImageNorth, md5LastImageSouth) = getWeatherImage(md5LastImageNorth, md5LastImageSouth)
             lastTime = curTime
             logging.info('Perform url checking.')
-            print 'Perform url checking at %s' % time.ctime()
+            print 'Perform url check at %s.' % time.ctime()
+        time.sleep(20)
             
 
 if __name__ == '__main__':
